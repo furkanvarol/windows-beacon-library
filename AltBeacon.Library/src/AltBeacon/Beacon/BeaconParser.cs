@@ -795,18 +795,41 @@ namespace AltBeacon.Beacon
         /// </returns>
         protected Beacon FromScanData(byte[] scanData, int rssi, BluetoothDevice device, Beacon.Builder beaconBuilder)
         {
-            int startByte = 2;
-            bool patternFound = false;
-            int matchingBeaconSize = this.matchingBeaconTypeCodeEndOffset.Value - 
+            int maxByteForMatch = 5; // for manufacturer data-based beacons
+            byte[] serviceUuidBytes = null;
+
+            int matchingBeaconSize = this.matchingBeaconTypeCodeEndOffset.Value -
                 this.matchingBeaconTypeCodeStartOffset.Value + 1;
             byte[] typeCodeBytes = LongToByteArray(this.MatchingBeaconTypeCode, matchingBeaconSize);
 
-            while (startByte <= 5)
+            if (this.ServiceUuid != null)
             {
-                if (AreByteArraysMatch(scanData, startByte + this.matchingBeaconTypeCodeStartOffset.Value, typeCodeBytes, 0))
+                maxByteForMatch = 11; // for uuid-based beacons
+                int serviceUuidSize = this.ServiceUuidEndOffset - this.ServiceUuidStartOffset + 1;
+                serviceUuidBytes = LongToByteArray(this.ServiceUuid.Value, serviceUuidSize);
+            }
+
+            int startByte = 2;
+            bool patternFound = false;
+
+            while (startByte <= maxByteForMatch)
+            {
+                if (this.ServiceUuid == null)
                 {
-                    patternFound = true;
-                    break;
+                    if (AreByteArraysMatch(scanData, startByte + this.MatchingBeaconTypeCodeStartOffset, typeCodeBytes, 0))
+                    {
+                        patternFound = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    if (AreByteArraysMatch(scanData, startByte + this.ServiceUuidStartOffset, serviceUuidBytes, 0) &&
+                            AreByteArraysMatch(scanData, startByte + this.MatchingBeaconTypeCodeStartOffset, typeCodeBytes, 0))
+                    {
+                        patternFound = true;
+                        break;
+                    }
                 }
 
                 startByte++;
