@@ -29,6 +29,7 @@ namespace AltBeacon.Beacon
     using System.Text;
     using System.Text.RegularExpressions;
     using AltBeacon.Bluetooth;
+    using AltBeacon.Logging;
 
     /// <summary>
     /// <para>
@@ -52,9 +53,9 @@ namespace AltBeacon.Beacon
     {
         #region Static Fields
         /// <summary>
-        /// Logger Tag
+        /// Current Class Logger Reference
         /// </summary>
-        private const string Tag = "BeaconParser";
+        private static readonly ILogger Logger = LogManager.GetLogger("BeaconParser");
 
         /// <summary>
         /// Identifier Pattern
@@ -416,8 +417,7 @@ namespace AltBeacon.Beacon
 
                 if (!found)
                 {
-                    ////TODO LogManager
-                    ////LogManager.d(Tag, "cannot parse term " + term);
+                    Logger.Debug("cannot parse term " + term);
                     throw new BeaconLayoutException("Cannot parse beacon layout term: " + term);
                 }
             }
@@ -699,19 +699,16 @@ namespace AltBeacon.Beacon
             {
                 long number = 0L;
 
-                //// TODO LogManager
-                //// LogManager.d(Tag, "Byte array is size " + bytes.Length);
+                Logger.Debug("Byte array is size " + bytes.Length);
                 for (int i = 0; i < bytes.Length; i++)
                 {
-                    //// TODO LogManager
-                    //// LogManager.d(Tag, "index is " + i);
+                    Logger.Debug("index is " + i);
                     long byteValue = (long)(bytes[bytes.Length - i - 1] & 0xff);
                     long positionValue = (long)Math.Pow(256.0, i * 1.0);
                     long calculatedValue = (long)(byteValue * positionValue);
-                    //// TODO LogManager
-                    //// LogManager.d(Tag, "calculatedValue for position " + i + 
-                    ////     " with positionValue " + positionValue + " and byteValue " + 
-                    ////     byteValue + " is " + calculatedValue);
+                    Logger.Debug("calculatedValue for position " + i + 
+                         " with positionValue " + positionValue + " and byteValue " + 
+                         byteValue + " is " + calculatedValue);
                     number += calculatedValue;
                 }
 
@@ -838,41 +835,44 @@ namespace AltBeacon.Beacon
             if (patternFound == false)
             {
                 // This is not a beacon
-                // TODO LogManager
-                /*if (this.ServiceUuid == null)
+                if (this.ServiceUuid == null)
                 {
-                    TODO LogManager
-                    if (LogManager.isVerboseLoggingEnabled())
+                    if (LogManager.VerboseLoggingEnabled)
                     {
-                        LogManager.d(TAG, "This is not a matching Beacon advertisement. " + 
-                            "(Was expecting %s. The bytes I see are: %s",
-                            byteArrayToString(typeCodeBytes), bytesToHex(scanData));
+                        Logger.Debug(
+                            "This is not a matching Beacon advertisement. " + 
+                            "(Was expecting {0}. The bytes I see are: {1}",
+                            ByteArrayToString(typeCodeBytes),
+                            BytesToHex(scanData));
                     }
                 }   
                 else
                 {
-                    if (LogManager.isVerboseLoggingEnabled())
+                    if (LogManager.VerboseLoggingEnabled)
                     {
-                        LogManager.d(TAG, "This is not a matching Beacon advertisement. " + 
-                            "(Was expecting %s and %s. The bytes I see are: %s", 
-                            byteArrayToString(serviceUuidBytes), 
-                            byteArrayToString(typeCodeBytes), bytesToHex(scanData));
+                        Logger.Debug(
+                            "This is not a matching Beacon advertisement. " + 
+                            "(Was expecting {0} and {1}. The bytes I see are: {2}", 
+                            ByteArrayToString(serviceUuidBytes), 
+                            ByteArrayToString(typeCodeBytes),
+                            BytesToHex(scanData));
                     }
-                }*/
+                }
+
                 return null;
             }
             else
             {
-                //// TODO LogManager
-                //// if (LogManager.isVerboseLoggingEnabled())
-                //// {
-                ////     LogManager.d(TAG, "This is a recognized beacon advertisement -- %s seen",
-                ////             byteArrayToString(typeCodeBytes));
-                //// }
-                ////
-                //// TODO LogManager
-                //// LogManager.d(Tag, "This is a recognized beacon advertisement -- " + 
-                ////     getMatchingBeaconTypeCode().ToString("x4") + " seen");
+                if (LogManager.VerboseLoggingEnabled)
+                {
+                    Logger.Debug(
+                        "This is a recognized beacon advertisement -- {0} seen",
+                        ByteArrayToString(typeCodeBytes));
+                }
+
+                Logger.Debug(
+                    "This is a recognized beacon advertisement -- {0} seen",
+                    this.MatchingBeaconTypeCode.ToString("x4"));
             }
 
             List<Identifier> identifiers = new List<Identifier>();
@@ -897,8 +897,8 @@ namespace AltBeacon.Beacon
                     this.dataLittleEndianFlags[i]);
 
                 dataFields.Add(long.Parse(dataString));
-                //// TODO LogManager
-                //// LogManager.d(Tag, "parsing found data field " + i);
+                
+                Logger.Debug("parsing found data field " + i);
                 //// TODO: error handling needed here on the parse
             }
 

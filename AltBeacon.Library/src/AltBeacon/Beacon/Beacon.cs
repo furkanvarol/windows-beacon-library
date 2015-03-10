@@ -27,6 +27,7 @@ namespace AltBeacon.Beacon
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Text;
+    using AltBeacon.Logging;
 
     /// <summary>
     /// <para>
@@ -56,9 +57,9 @@ namespace AltBeacon.Beacon
     public class Beacon
     {
         /// <summary>
-        /// Logger Tag
+        /// Current Class Logger Reference
         /// </summary>
-        private const string Tag = "Beacon";
+        private static readonly ILogger Logger = LogManager.GetLogger("Beacon");
 
         /// TODO DistanceCalculator
         /*protected static DistanceCalculator sDistanceCalculator = null;*/
@@ -224,11 +225,10 @@ namespace AltBeacon.Beacon
                     {
                         bestRssiAvailable = this.RunningAverageRssi.Value;
                     }
-                    ////TODO LogManager
-                    ////else
-                    ////{
-                    ////    LogManager.d(Tag, "Not using running average RSSI because it is null");
-                    ////}
+                    else
+                    {
+                        Logger.Debug("Not using running average RSSI because it is null");
+                    }
 
                     this.distance = CalculateDistance(this.TxPower, bestRssiAvailable);
                 }
@@ -282,7 +282,6 @@ namespace AltBeacon.Beacon
         /// </para>
         /// </summary>
         public int ServiceUuid { get; protected set; }
-
 
         /// <summary>
         /// Gets and sets the DistanceCalculator to use with this beacon.
@@ -410,8 +409,7 @@ namespace AltBeacon.Beacon
             ////}
             ////else
             ////{
-                ////TODO LogManager
-                ////LogManager.e(Tag, "Distance calculator not set.  Distance will bet set to -1");
+                ////Logger.Error("Distance calculator not set.  Distance will bet set to -1");
                 return -1.0;
             ////}
         }
