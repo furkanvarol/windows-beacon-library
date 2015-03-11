@@ -32,23 +32,29 @@ namespace AltBeacon.Logging
     {
         #region Factory Fields
         /// <summary>
+        /// Default Logger Factory
+        /// <see cref="WarningDiagnosticsLoggerFactory"/>
+        /// </summary>
+        public static readonly ILoggerFactory DefaultLoggerFactory = new WarningDiagnosticsLoggerFactory();
+
+        /// <summary>
         /// Predefined Empty Logger Factory
         /// <see cref="AltBeacon.Logging.EmptyLoggerFactory"/>
         /// </summary>
-        public static readonly EmptyLoggerFactory EmptyLoggerFactory = new EmptyLoggerFactory();
+        public static readonly ILoggerFactory EmptyLoggerFactory = new EmptyLoggerFactory();
 
         /// <summary>
         /// Predefined Verbose(Trace) or higher level Logger Factory
         /// <see cref="AltBeacon.Logging.VerboseDiagnosticsLoggerFactory"/>
         /// </summary>
-        public static readonly VerboseDiagnosticsLoggerFactory VerboseDiagnosticsLoggerFactory =
+        public static readonly ILoggerFactory VerboseDiagnosticsLoggerFactory =
             new VerboseDiagnosticsLoggerFactory();
 
         /// <summary>
         /// Predefined Warning or higher level Logger Factory
         /// <see cref="AltBeacon.Logging.WarningDiagnosticsLoggerFactory"/>
         /// </summary>
-        public static readonly WarningDiagnosticsLoggerFactory WarningDiagnosticsLoggerFactory =
+        public static readonly ILoggerFactory WarningDiagnosticsLoggerFactory =
             new WarningDiagnosticsLoggerFactory();
         #endregion Factory Fields
 
@@ -56,7 +62,7 @@ namespace AltBeacon.Logging
         /// <summary>
         /// <see cref="LoggerFactory"/>
         /// </summary>
-        private static ILoggerFactory loggerFactory = WarningDiagnosticsLoggerFactory;
+        private static ILoggerFactory loggerFactory = DefaultLoggerFactory;
 
         /// <summary>
         /// <see cref="VerboseLoggingEnabled"/>
