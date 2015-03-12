@@ -40,7 +40,7 @@ namespace AltBeacon.Logging
         /// </returns>
         public ILogger GetLogger(string name)
         {
-            return new VerboseDiagnosticsLogger(name);
+            return new WarningDiagnosticsLogger(name);
         }
     }
 }
