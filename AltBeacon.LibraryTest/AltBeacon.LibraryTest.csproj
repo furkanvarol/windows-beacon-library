@@ -54,6 +54,13 @@
     <Compile Include="src\AltBeacon\Beacon\IdentifierTest.cs" />
     <Compile Include="src\AltBeacon\Beacon\BeaconTest.cs" />
     <Compile Include="src\AltBeacon\Beacon\BeaconParserTest.cs" />
+    <Compile Include="src\AltBeacon\Logging\WarningDiagnosticsLoggerFactoryTest.cs" />
+    <Compile Include="src\AltBeacon\Logging\VerboseDiagnosticsLoggerFactoryTest.cs" />
+    <Compile Include="src\AltBeacon\Logging\LogManagerTest.cs" />
+    <Compile Include="src\AltBeacon\Logging\EmptyLoggerTest.cs" />
+    <Compile Include="src\AltBeacon\Logging\EmptyLoggerFactoryTest.cs" />
+    <Compile Include="src\AltBeacon\Logging\WarningDiagnosticsLoggerTest.cs" />
+    <Compile Include="src\AltBeacon\Logging\VerboseDiagnosticsLoggerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AltBeacon.Library\AltBeacon.Library.csproj">
@@ -61,6 +68,7 @@
       <Name>AltBeacon.Library</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
