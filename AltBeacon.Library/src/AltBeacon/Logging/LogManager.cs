@@ -65,9 +65,9 @@ namespace AltBeacon.Logging
         private static ILoggerFactory loggerFactory = DefaultLoggerFactory;
 
         /// <summary>
-        /// <see cref="VerboseLoggingEnabled"/>
+        /// <see cref="DebugLoggingEnabled"/>
         /// </summary>
-        private static bool verboseLoggingEnabled = false;
+        private static bool debugLoggingEnabled = false;
         #endregion Private Fields
 
         #region Properties
@@ -99,17 +99,18 @@ namespace AltBeacon.Logging
         /// <summary>
         /// Gets or sets a value indicating whether verbose logging is enabled.
         /// If not, expensive calculations to create log strings should be avoided.
+        /// This flag is extensively used in BeaconParser.
         /// </summary>
-        public static bool VerboseLoggingEnabled
+        public static bool DebugLoggingEnabled
         {
             get
             {
-                return verboseLoggingEnabled;
+                return debugLoggingEnabled;
             }
 
             set
             {
-                verboseLoggingEnabled = value;
+                debugLoggingEnabled = value;
             }
         }
         #endregion Properties

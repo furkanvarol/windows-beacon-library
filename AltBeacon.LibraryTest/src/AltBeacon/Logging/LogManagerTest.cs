@@ -33,24 +33,24 @@ namespace AltBeacon.Logging
         [TestMethod]
         public void TestVerboseLoggingEnabledTrue()
         {
-            LogManager.VerboseLoggingEnabled = false;
-            LogManager.VerboseLoggingEnabled = true;
+            LogManager.DebugLoggingEnabled = false;
+            LogManager.DebugLoggingEnabled = true;
 
             Assert.AreEqual(
                 true, 
-                LogManager.VerboseLoggingEnabled, 
+                LogManager.DebugLoggingEnabled, 
                 "VerboseLoggingEnabled should be set to true");
         }
 
         [TestMethod]
         public void TestVerboseLoggingEnabledFalse()
         {
-            LogManager.VerboseLoggingEnabled = true;
-            LogManager.VerboseLoggingEnabled = false;
+            LogManager.DebugLoggingEnabled = true;
+            LogManager.DebugLoggingEnabled = false;
 
             Assert.AreEqual(
                 false, 
-                LogManager.VerboseLoggingEnabled, 
+                LogManager.DebugLoggingEnabled, 
                 "VerboseLoggingEnabled should be set to false");
         }
 

@@ -417,7 +417,11 @@ namespace AltBeacon.Beacon
 
                 if (!found)
                 {
-                    Logger.Debug("cannot parse term " + term);
+                    if (LogManager.DebugLoggingEnabled)
+                    {
+                        Logger.Debug("cannot parse term " + term);
+                    }
+
                     throw new BeaconLayoutException("Cannot parse beacon layout term: " + term);
                 }
             }
@@ -837,7 +841,7 @@ namespace AltBeacon.Beacon
                 // This is not a beacon
                 if (this.ServiceUuid == null)
                 {
-                    if (LogManager.VerboseLoggingEnabled)
+                    if (LogManager.DebugLoggingEnabled)
                     {
                         Logger.Debug(
                             "This is not a matching Beacon advertisement. " + 
@@ -848,7 +852,7 @@ namespace AltBeacon.Beacon
                 }   
                 else
                 {
-                    if (LogManager.VerboseLoggingEnabled)
+                    if (LogManager.DebugLoggingEnabled)
                     {
                         Logger.Debug(
                             "This is not a matching Beacon advertisement. " + 
@@ -863,16 +867,12 @@ namespace AltBeacon.Beacon
             }
             else
             {
-                if (LogManager.VerboseLoggingEnabled)
+                if (LogManager.DebugLoggingEnabled)
                 {
                     Logger.Debug(
                         "This is a recognized beacon advertisement -- {0} seen",
                         ByteArrayToString(typeCodeBytes));
                 }
-
-                Logger.Debug(
-                    "This is a recognized beacon advertisement -- {0} seen",
-                    this.MatchingBeaconTypeCode.ToString("x4"));
             }
 
             List<Identifier> identifiers = new List<Identifier>();
